@@ -101,7 +101,9 @@ module RDL::Type
             return false unless left.val == param
           elsif param.is_a? GenericType
             return false unless param.base.to_s == "JoinTable"
-            join_node = left.find_one(:JOIN)
+            join_node = left.find_all(:JOIN)
+            return false unless join_node.size == 1
+            join_node = join_node[0]
             return left.val.val == param.params[0].klass && Type.leq(join_node.val, param.params[1])
           end
         end
